@@ -24,11 +24,19 @@ class mainApp(QtWidgets.QMainWindow, view.Ui_bgDialog):
 		for i in range(len(self.dataID)):
 			self.table_data.setHorizontalHeaderItem(i, QtWidgets.QTableWidgetItem(str(self.dataID[i])))
 
-	def generateRating(self,dataUserID):
+	def generateBaris(self,dataUserID):
 		self.table_data.setRowCount(len(dataUserID))
 		for i in range(0,len(dataUserID)):
 			for j in range(0,i):
 				self.table_data.setItem(i,j,QtWidgets.QTableWidgetItem(j))
+
+	def generateRating(self,dataUserID):
+		for x in range(0,len(self.data)):
+			for y in range(0,3):
+				print(self.data[x][y])
+		# for i in range(0,len(dataUserID)):
+		# 	for j in range(0,len(self.dataID)):
+		# 		self.table_data.setItem(i,j,QtWidgets.QTableWidgetItem(str(6)))
 
 	def openFile(self):
 		# Open File
@@ -48,6 +56,7 @@ class mainApp(QtWidgets.QMainWindow, view.Ui_bgDialog):
 		print(userListID)
 		# Func Generate Kolom
 		self.generateKolom()
+		self.generateBaris(userListID)
 		self.generateRating(userListID)
 		
 def main():
