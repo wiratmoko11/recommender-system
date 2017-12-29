@@ -14,15 +14,17 @@ class mainApp(QtWidgets.QMainWindow, view.Ui_bgDialog):
 		self.generateKolom()
 		self.data = ""
 		# Data Untuk Generate Kolom
-		self.dataID = []
+		self.datatempMovieID = []
 		self.dataMovieID = ""
 		# Data Untuk Generate Baris
 		self.dataUserID=""
+		self.datatempUserID = []
+		# data
 
 	def generateKolom(self):
-		self.table_data.setColumnCount(len(self.dataID))
-		for i in range(len(self.dataID)):
-			self.table_data.setHorizontalHeaderItem(i, QtWidgets.QTableWidgetItem(str(self.dataID[i])))
+		self.table_data.setColumnCount(len(self.datatempMovieID))
+		for i in range(len(self.datatempMovieID)):
+			self.table_data.setHorizontalHeaderItem(i, QtWidgets.QTableWidgetItem(str(self.datatempMovieID[i])))
 
 	def generateBaris(self,dataUserID):
 		self.table_data.setRowCount(len(dataUserID))
@@ -31,11 +33,17 @@ class mainApp(QtWidgets.QMainWindow, view.Ui_bgDialog):
 				self.table_data.setItem(i,j,QtWidgets.QTableWidgetItem(j))
 
 	def generateRating(self,dataUserID):
-		for x in range(0,len(self.data)):
-			for y in range(0,3):
-				print(self.data[x][y])
+		userID =  self.data.loc[:,('userId')].values
+		movieID = self.data.loc[:,('movieId')].values
+		ratingID = self.data.loc[:,('rating')].values
+		
+		for x in range(0,len(userID)):
+			indexMovieID = self.datatempMovieID.index(movieID[x])
+			indexUserID = self.datatempUserID.index(userID[x])
+			self.table_data.setItem(indexUserID,indexMovieID,QtWidgets.QTableWidgetItem(str(ratingID[x])))
+
 		# for i in range(0,len(dataUserID)):
-		# 	for j in range(0,len(self.dataID)):
+		# 	for j in range(0,len(self.datatempMovieID)):
 		# 		self.table_data.setItem(i,j,QtWidgets.QTableWidgetItem(str(6)))
 
 	def openFile(self):
@@ -45,19 +53,18 @@ class mainApp(QtWidgets.QMainWindow, view.Ui_bgDialog):
 		self.dataMovieID = self.data.loc[:,('movieId')].values
 		self.dataMovieID.sort()
 		rmDuplicate = set(self.dataMovieID)
-		self.dataID = list(rmDuplicate)
-		self.dataID.sort()
+		self.datatempMovieID = list(rmDuplicate)
+		self.datatempMovieID.sort()
 		# getData UserID
 		self.dataUserID = self.data.loc[:,('userId')].values
 		self.dataUserID.sort()
 		barisDup = set(self.dataUserID)
-		userListID = list(barisDup)
-		userListID.sort()
-		print(userListID)
+		self.datatempUserID = list(barisDup)
+		self.datatempUserID.sort()
 		# Func Generate Kolom
 		self.generateKolom()
-		self.generateBaris(userListID)
-		self.generateRating(userListID)
+		self.generateBaris(self.datatempUserID)
+		self.generateRating(self.datatempUserID)
 		
 def main():
     app = QtWidgets.QApplication(sys.argv)  # A new instance of QApplication
