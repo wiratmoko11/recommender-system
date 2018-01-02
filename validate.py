@@ -17,7 +17,7 @@ class validate():
         for i in range(data_predict.shape[0]):
             for j in range(data_predict.shape[1]):
                 if(data_training[i][j] == -1):
-                    count_e = abs(data_testing[i][j] - data_predict[i][j])
+                    count_e = count_e + abs(data_testing[i][j] - data_predict[i][j])
                     count_data = count_data + 1
                 
         return count_e / count_data
