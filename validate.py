@@ -59,7 +59,6 @@ class validate():
                     pearson[u][v] = sim.pearson(u, v, mean)
                     pearson[v][u] = pearson[u][v]
                     
-                    
                     print("Pearson User ", u, "Dan ", v, " = ", pearson[u][v])
 
             df = pandas.DataFrame(pearson)

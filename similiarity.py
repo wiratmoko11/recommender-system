@@ -14,7 +14,6 @@ class similiarity():
         rating_user_u = self.datasets[u]
         rating_user_v = self.datasets[v]
         item_of_intersect = self.intersection(rating_user_u, rating_user_v)
-        cons = self.consistency(u, v)
         #print("Item of Intersect ", item_of_intersect)
         top = 0; bottom_u = 0; bottom_v = 0
         for i in range(0, len(item_of_intersect)):
@@ -27,7 +26,7 @@ class similiarity():
         else:    
             pearson_value = top / (math.sqrt(bottom_u) * math.sqrt(bottom_v))
 
-        return cons * pearson_value
+        return pearson_value
 
     def intersection(self, data1, data2):
         index_intersect = []
@@ -36,9 +35,6 @@ class similiarity():
                 index_intersect.append(i)
             
         return index_intersect
-    
-    
-    
     def mean(self, user):
         #print(self.datasets[0])
         rating_user = self.datasets[user]
@@ -75,13 +71,12 @@ class similiarity():
         k = 5
         theta = 0.5
         P, sorted_pearson = self.find_similiar_user(user, item, k, pearson)
-        print(P)
         prediction_rating = 0
         top = 0; bottom = 0;
         for i in P:
-            if(sorted_pearson[i-1] > theta):
-                top = top + self.datasets[i-1][item] * sorted_pearson[i-1]
-                bottom = bottom + sorted_pearson[i-1]
+            if(sorted_pearson[i] > theta):
+                top = top + self.datasets[i][item] * sorted_pearson[i]
+                bottom = bottom + sorted_pearson[i]
         
         if(bottom == 0):
             prediction_rating = 0
@@ -89,22 +84,6 @@ class similiarity():
             prediction_rating = top / bottom
 
         return prediction_rating
-
-    def consistency(self, u, v):
-        rating_user_u = self.datasets[u]
-        rating_user_v = self.datasets[v]
-        count_union = 0
-        count_consistency = 0   
-        for i in range(rating_user_u.shape[0]):
-            if((rating_user_u[i] != 0 and rating_user_u[i] != -1) and (rating_user_v[i] != 0 and rating_user_v[i] != -1) and (rating_user_u[i] == rating_user_v[i]) ):
-                count_consistency = count_consistency + 1            
-            if((rating_user_u[i] != 0 and rating_user_u[i] != -1) and (rating_user_v[i] != 0 and rating_user_v[i] != -1)):
-                count_union = count_union + 1
-        if(count_union == 0):
-            return 0
-        else:
-            return count_consistency / count_union
-            
 
 if __name__ == "__main__":
     datasets = datasets("movie-lens.csv")
