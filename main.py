@@ -1,11 +1,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 import view
+import validate
 import os
 import numpy as np
 import pandas as pd
 
-class mainApp(QtWidgets.QMainWindow, view.Ui_bgDialog):
+class mainApp(QtWidgets.QMainWindow, view.Ui_bgDialog, validate.validate):
 	def __init__(self, parent=None):
 		super(mainApp, self).__init__(parent)
 		self.setupUi(self)
@@ -19,7 +20,8 @@ class mainApp(QtWidgets.QMainWindow, view.Ui_bgDialog):
 		# Data Untuk Generate Baris
 		self.dataUserID=""
 		self.datatempUserID = []
-		# data
+		# btnProsesClick
+		self.btn_proses.clicked.connect(self.training)
 
 	def generateKolom(self):
 		self.table_data.setColumnCount(len(self.datatempMovieID))
@@ -37,14 +39,15 @@ class mainApp(QtWidgets.QMainWindow, view.Ui_bgDialog):
 		movieID = self.data.loc[:,('movieId')].values
 		ratingID = self.data.loc[:,('rating')].values
 		
+		for i in range(0,len(dataUserID)):
+			for j in range(0,len(self.datatempMovieID)):
+				self.table_data.setItem(i,j,QtWidgets.QTableWidgetItem(str(0)))
+
 		for x in range(0,len(userID)):
 			indexMovieID = self.datatempMovieID.index(movieID[x])
 			indexUserID = self.datatempUserID.index(userID[x])
-			self.table_data.setItem(indexUserID,indexMovieID,QtWidgets.QTableWidgetItem(str(ratingID[x])))
-
-		# for i in range(0,len(dataUserID)):
-		# 	for j in range(0,len(self.datatempMovieID)):
-		# 		self.table_data.setItem(i,j,QtWidgets.QTableWidgetItem(str(6)))
+			self.table_data.setItem(indexUserID,indexMovieID,QtWidgets.QTableWidgetItem(str(ratingID[x])))		
+		
 
 	def openFile(self):
 		# Open File
@@ -65,6 +68,7 @@ class mainApp(QtWidgets.QMainWindow, view.Ui_bgDialog):
 		self.generateKolom()
 		self.generateBaris(self.datatempUserID)
 		self.generateRating(self.datatempUserID)
+
 		
 def main():
     app = QtWidgets.QApplication(sys.argv)  # A new instance of QApplication

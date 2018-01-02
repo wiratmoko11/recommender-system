@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>560</width>
-    <height>390</height>
+    <height>456</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,11 +16,24 @@
   <widget class="QTableWidget" name="table_data">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>20</x>
      <y>30</y>
-     <width>481</width>
+     <width>521</width>
      <height>291</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_proses">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>350</y>
+     <width>141</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Proses Komputasi</string>
    </property>
   </widget>
  </widget>
